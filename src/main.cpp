@@ -1,53 +1,27 @@
 #include <Arduino.h>
-#include "AccelStepper.h"
-
-// Define stepper motor connections and motor interface type. Motor interface type must be set to 1 when using a driver:
+// Define stepper motor connections and steps per revolution:
 #define dirPin 2
 #define stepPin 3
-#define motorInterfaceType 1
-
-// Create a new instance of the AccelStepper class:
-AccelStepper stepper = AccelStepper(motorInterfaceType, stepPin, dirPin);
+#define stepsPerRevolution 200
 
 void setup() {
-  // Set the maximum speed in steps per second:
-  stepper.setMaxSpeed(1000);
+  // Declare pins as output:
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);
 }
 
-void loop() { 
-  // Set the current position to 0:
-  stepper.setCurrentPosition(0);
+void loop() {
+  // Set the spinning direction clockwise:
+  digitalWrite(dirPin, HIGH);
 
-  // Run the motor forward at 200 steps/second until the motor reaches 400 steps (2 revolutions):
-  while(stepper.currentPosition() != 400)
-  {
-    stepper.setSpeed(200);
-    stepper.runSpeed();
+  // Spin the stepper motor 1 revolution slowly:
+  for (int i = 0; i < stepsPerRevolution; i++) {
+    // These four lines result in 1 step:
+    digitalWrite(stepPin, HIGH);
+    delayMicroseconds(2000);
+    digitalWrite(stepPin, LOW);
+    delayMicroseconds(2000);
   }
 
   delay(1000);
-
-  // Reset the position to 0:
-  stepper.setCurrentPosition(0);
-
-  // Run the motor backwards at 600 steps/second until the motor reaches -200 steps (1 revolution):
-  while(stepper.currentPosition() != -200) 
-  {
-    stepper.setSpeed(-600);
-    stepper.runSpeed();
-  }
-
-  delay(1000);
-
-  // Reset the position to 0:
-  stepper.setCurrentPosition(0);
-
-  // Run the motor forward at 400 steps/second until the motor reaches 600 steps (3 revolutions):
-  while(stepper.currentPosition() != 600)
-  {
-    stepper.setSpeed(400);
-    stepper.runSpeed();
-  }
-
-  delay(3000);
 }
