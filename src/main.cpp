@@ -25,8 +25,8 @@ AccelStepper stepper = AccelStepper(motorInterfaceType, stepPin, dirPin);
 void setup() {
   pinMode(DIST_PIN, INPUT);
   // Set the maximum speed in steps per second:
-  stepper.setMaxSpeed(4800);
-  stepper.setAcceleration(1200);
+  stepper.setMaxSpeed(6400);
+  stepper.setAcceleration(1600);
 }
 
 void loop() { 
@@ -42,7 +42,7 @@ void loop() {
   // Run the motor forward at 200 steps/second until the motor reaches 400 steps (2 revolutions):
   while(stepper.currentPosition() != (6400))
   {
-    stepper.setSpeed(4800);
+    stepper.setSpeed(6400);
     stepper.runSpeed();
   }
 
